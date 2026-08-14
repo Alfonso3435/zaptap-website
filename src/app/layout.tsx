@@ -1,35 +1,44 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/CartDrawer";
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ZapTap — Custom NFC cards for instant reviews",
+  metadataBase: new URL("https://zaptap.shop"),
+  title: "ZapTap — Custom NFC Google review cards, one-time payment",
   description:
-    "Custom-branded NFC cards and plates with your business logo. One tap and your customers leave a Google review, follow you on social media, or answer a survey. No minimum order. Free shipping in 48 hours.",
+    "Custom-branded NFC review cards from $19.99. Free design, backup QR, free chip replacement, 48-hour delivery. No subscription. Built in Sammamish, WA.",
+  openGraph: {
+    title: "ZapTap — Custom NFC Google review cards",
+    description:
+      "Your happy customers meant to leave you a review. One tap, inside the 90-second window. One payment, no subscription.",
+    url: "https://zaptap.shop",
+    siteName: "ZapTap",
+    type: "website",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}>
-        <CartProvider>{children}</CartProvider>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
+      <body className="font-sans antialiased">
+        <CartProvider>
+          {children}
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

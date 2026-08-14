@@ -2,38 +2,32 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-  ReactNode,
 } from "react";
-import type { CartItem, Destination } from "@/types";
+import type { CartItem, Destination, Product } from "@/types";
 
-type CartContextValue = {
+const STORAGE_KEY = "zaptap-cart-v2";
+
+interface CartContextValue {
   items: CartItem[];
+  count: number;
+  total: number;
   isOpen: boolean;
+  add: (product: Product, quantity: number, destination: Destination) => void;
+  setQuantity: (productId: string, destination: Destination, quantity: number) => void;
+  remove: (productId: string, destination: Destination) => void;
+  clear: () => void;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (item: {
-    productId: string;
-    name: string;
-    unitPrice: number;
-    quantity: number;
-    destination: Destination;
-  }) => void;
-  removeItem: (lineId: string) => void;
-  updateQuantity: (lineId: string, quantity: number) => void;
-  clearCart: () => void;
-  totalItems: number;
-  totalPrice: number;
-};
+}
 
-const CartContext = createContext<CartContextValue | undefined>(undefined);
+const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "zaptap-cart";
-
-export function CartProvider({ children }: { children: ReactNode }) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -41,96 +35,92 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw));
+      if (raw) setItems(JSON.parse(raw) as CartItem[]);
     } catch {
-      // ignore corrupt storage
+      // Corrupted or unavailable storage: start with an empty cart.
     }
     setHydrated(true);
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Storage full or blocked. The cart still works for this session.
+    }
   }, [items, hydrated]);
 
-  const addItem: CartContextValue["addItem"] = ({
-    productId,
-    name,
-    unitPrice,
-    quantity,
-    destination,
-  }) => {
-    setItems((prev) => {
-      const existing = prev.find(
-        (i) => i.productId === productId && i.destination === destination
-      );
-      if (existing) {
-        return prev.map((i) =>
-          i.lineId === existing.lineId
-            ? { ...i, quantity: i.quantity + quantity }
-            : i
+  const add = useCallback(
+    (product: Product, quantity: number, destination: Destination) => {
+      setItems((prev) => {
+        const i = prev.findIndex(
+          (it) => it.productId === product.id && it.destination === destination
         );
-      }
-      return [
-        ...prev,
-        {
-          lineId: `${productId}-${destination}-${Date.now()}`,
-          productId,
-          name,
-          unitPrice,
-          quantity,
-          destination,
-        },
-      ];
-    });
-    setIsOpen(true);
-  };
+        if (i > -1) {
+          const next = [...prev];
+          next[i] = { ...next[i], quantity: next[i].quantity + quantity };
+          return next;
+        }
+        return [
+          ...prev,
+          {
+            productId: product.id,
+            name: product.name,
+            price: product.price,
+            quantity,
+            destination,
+          },
+        ];
+      });
+      setIsOpen(true);
+    },
+    []
+  );
 
-  const removeItem = (lineId: string) => {
-    setItems((prev) => prev.filter((i) => i.lineId !== lineId));
-  };
+  const setQuantity = useCallback(
+    (productId: string, destination: Destination, quantity: number) => {
+      setItems((prev) =>
+        quantity <= 0
+          ? prev.filter(
+              (it) => !(it.productId === productId && it.destination === destination)
+            )
+          : prev.map((it) =>
+              it.productId === productId && it.destination === destination
+                ? { ...it, quantity }
+                : it
+            )
+      );
+    },
+    []
+  );
 
-  const updateQuantity = (lineId: string, quantity: number) => {
+  const remove = useCallback((productId: string, destination: Destination) => {
     setItems((prev) =>
-      prev.map((i) =>
-        i.lineId === lineId ? { ...i, quantity: Math.max(1, quantity) } : i
-      )
+      prev.filter((it) => !(it.productId === productId && it.destination === destination))
     );
-  };
+  }, []);
 
-  const clearCart = () => setItems([]);
+  const clear = useCallback(() => setItems([]), []);
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
 
-  const totalItems = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
+  const count = useMemo(() => items.reduce((n, i) => n + i.quantity, 0), [items]);
+  const total = useMemo(
+    () => items.reduce((n, i) => n + i.price * i.quantity, 0),
     [items]
   );
-  const totalPrice = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity * i.unitPrice, 0),
-    [items]
+
+  const value = useMemo(
+    () => ({ items, count, total, isOpen, add, setQuantity, remove, clear, openCart, closeCart }),
+    [items, count, total, isOpen, add, setQuantity, remove, clear, openCart, closeCart]
   );
 
-  return (
-    <CartContext.Provider
-      value={{
-        items,
-        isOpen,
-        openCart: () => setIsOpen(true),
-        closeCart: () => setIsOpen(false),
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        totalPrice,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used within CartProvider");
+  if (!ctx) throw new Error("useCart must be used inside <CartProvider>");
   return ctx;
 }

@@ -1,131 +1,99 @@
 "use client";
 
-import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { destinationLabels } from "@/types";
+import { checkoutMessage, waLink } from "@/lib/whatsapp";
+import { DESTINATION_LABELS } from "@/types";
 
-const PHONE_NUMBER = "+14256528532";
+export default function CartDrawer() {
+  const { items, total, isOpen, closeCart, setQuantity, remove, clear } = useCart();
 
-export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } =
-    useCart();
-  const [phone, setPhone] = useState("");
-
-  const buildOrderMessage = () => {
-    const lines = items.map(
-      (i) =>
-        `- ${i.quantity}x ${i.name} (${destinationLabels[i.destination]}) $${(
-          i.unitPrice * i.quantity
-        ).toFixed(2)}`
-    );
-    const body = [
-      "Hi ZapTap, I'd like to place this order:",
-      ...lines,
-      `Total: $${totalPrice.toFixed(2)}`,
-      phone ? `My number for order updates: ${phone}` : "",
-    ]
-      .filter(Boolean)
-      .join(" ");
-    return encodeURIComponent(body);
-  };
-
-  const checkoutHref = `sms:${PHONE_NUMBER}?&body=${buildOrderMessage()}`;
+  if (!isOpen) return null;
 
   return (
-    <>
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-ink/40 z-50"
-          onClick={closeCart}
-          aria-hidden="true"
-        />
-      )}
+    <div className="fixed inset-0 z-50">
+      <div
+        className="absolute inset-0 bg-black/40"
+        onClick={closeCart}
+        aria-hidden
+      />
+
       <aside
-        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-paper z-50 shadow-2xl transition-transform duration-300 flex flex-col ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        aria-hidden={!isOpen}
+        role="dialog"
+        aria-label="Cart"
+        className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white shadow-xl"
       >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-line">
-          <h2 className="font-display font-semibold text-lg flex items-center gap-2">
-            <CartGlyph /> Your cart
-          </h2>
+        <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-5">
+          <h2 className="font-display text-lg font-bold text-ink">Your order</h2>
           <button
             onClick={closeCart}
             aria-label="Close cart"
-            className="w-8 h-8 flex items-center justify-center text-graphite hover:text-ink"
+            className="rounded-full border border-neutral-300 px-3 py-1 text-sm"
           >
-            ✕
+            Close
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-5">
+        <div className="flex-1 overflow-y-auto px-6 py-6">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16">
-              <span className="w-16 h-16 rounded-full bg-paper-dim flex items-center justify-center">
-                <CartGlyph size={22} />
-              </span>
-              <p className="font-display font-semibold">
-                You haven&apos;t added anything yet
-              </p>
-              <p className="text-sm text-graphite max-w-[220px]">
-                Pick a product and tell us what you&apos;ll use it for.
-              </p>
+            <div>
+              <p className="text-base text-neutral-700">Nothing in here yet.</p>
+              <button
+                onClick={closeCart}
+                className="mt-4 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white"
+              >
+                See the cards
+              </button>
             </div>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-6">
               {items.map((item) => (
                 <li
-                  key={item.lineId}
-                  className="rounded-xl border border-line p-4"
+                  key={`${item.productId}-${item.destination}`}
+                  className="border-b border-neutral-200 pb-6"
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex justify-between gap-4">
                     <div>
-                      <p className="font-display font-semibold text-sm">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-graphite mt-0.5">
-                        {destinationLabels[item.destination]}
+                      <p className="font-display font-bold text-ink">{item.name}</p>
+                      <p className="mt-1 text-xs text-neutral-500">
+                        Points to {DESTINATION_LABELS[item.destination]}
                       </p>
                     </div>
-                    <button
-                      onClick={() => removeItem(item.lineId)}
-                      aria-label={`Remove ${item.name}`}
-                      className="text-graphite hover:text-ink shrink-0"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                      </svg>
-                    </button>
+                    <p className="font-display font-bold text-ink">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </p>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="inline-flex items-center border border-line rounded-full">
+                  <div className="mt-4 flex items-center gap-3">
+                    <div className="flex items-center rounded-full border border-neutral-300">
                       <button
                         onClick={() =>
-                          updateQuantity(item.lineId, item.quantity - 1)
+                          setQuantity(item.productId, item.destination, item.quantity - 1)
                         }
-                        className="w-7 h-7 flex items-center justify-center text-sm"
                         aria-label="Decrease quantity"
+                        className="px-3 py-1.5 text-lg leading-none text-neutral-600"
                       >
-                        −
+                        &minus;
                       </button>
-                      <span className="w-7 text-center text-sm font-medium">
+                      <span className="min-w-6 text-center text-sm font-semibold">
                         {item.quantity}
                       </span>
                       <button
                         onClick={() =>
-                          updateQuantity(item.lineId, item.quantity + 1)
+                          setQuantity(item.productId, item.destination, item.quantity + 1)
                         }
-                        className="w-7 h-7 flex items-center justify-center text-sm"
                         aria-label="Increase quantity"
+                        className="px-3 py-1.5 text-lg leading-none text-neutral-600"
                       >
                         +
                       </button>
                     </div>
-                    <span className="font-display font-semibold text-sm">
-                      ${(item.unitPrice * item.quantity).toFixed(2)}
-                    </span>
+
+                    <button
+                      onClick={() => remove(item.productId, item.destination)}
+                      className="text-sm text-neutral-500 underline underline-offset-4"
+                    >
+                      Remove
+                    </button>
                   </div>
                 </li>
               ))}
@@ -134,56 +102,41 @@ export function CartDrawer() {
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-line px-6 py-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-graphite text-sm">Total</span>
-              <span className="font-display text-2xl font-bold">
-                ${totalPrice.toFixed(2)} <span className="text-sm font-normal text-graphite">USD</span>
+          <div className="border-t border-neutral-200 px-6 py-6">
+            <div className="flex justify-between">
+              <span className="text-base text-neutral-700">Total</span>
+              <span className="font-display text-2xl font-bold text-ink">
+                ${total.toFixed(2)}
               </span>
             </div>
 
-            <div>
-              <label htmlFor="cart-phone" className="text-xs font-semibold text-graphite">
-                Phone number for order updates
-              </label>
-              <input
-                id="cart-phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="10-digit number"
-                className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-ink outline-none"
-              />
-            </div>
+            <p className="mt-2 text-xs leading-relaxed text-neutral-500">
+              Free shipping. Free custom design. One payment, no subscription.
+            </p>
 
             <a
-              href={checkoutHref}
-              className="flex items-center justify-center rounded-full bg-zap-yellow text-ink font-semibold py-3.5 hover:bg-zap-yellow-deep transition-colors"
+              href={waLink(checkoutMessage(items, total))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 block rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
             >
-              Send order by text message
+              Finish on WhatsApp
             </a>
-            <p className="text-[11px] text-graphite text-center leading-relaxed">
-              Free shipping · Delivered in under 48 hours
+
+            <p className="mt-3 text-xs leading-relaxed text-neutral-500">
+              We&apos;ll confirm your design and Google link there, then send
+              payment. Nothing is charged until you approve the mockup.
             </p>
+
+            <button
+              onClick={clear}
+              className="mt-4 w-full text-sm text-neutral-500 underline underline-offset-4"
+            >
+              Empty the cart
+            </button>
           </div>
         )}
       </aside>
-    </>
-  );
-}
-
-function CartGlyph({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="9" cy="21" r="1.4" fill="currentColor" />
-      <circle cx="18" cy="21" r="1.4" fill="currentColor" />
-    </svg>
+    </div>
   );
 }

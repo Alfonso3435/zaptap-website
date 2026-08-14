@@ -1,30 +1,26 @@
-const PHONE_NUMBER = "+14256528532";
+import { waLink } from "@/lib/whatsapp";
 
-export function CustomOrder() {
-  const message = encodeURIComponent(
-    "Hi ZapTap, I'd like a quote for a custom order for my business."
-  );
-  const href = `sms:${PHONE_NUMBER}?&body=${message}`;
-
+export default function CustomOrder() {
   return (
-    <div className="container-page py-10 lg:py-14 border-b border-line">
-      <div className="rounded-2xl border-2 border-dashed border-zap-yellow-deep bg-paper-dim p-7 sm:p-9 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div>
-          <h3 className="font-display font-semibold text-lg">
-            Custom orders
-          </h3>
-          <p className="mt-1.5 text-graphite max-w-md leading-relaxed">
-            Need more cards, a different material, or something out of the
-            ordinary? We&apos;ll quote it for you — no minimum order.
-          </p>
-        </div>
-        <a
-          href={href}
-          className="shrink-0 inline-flex items-center gap-2 rounded-full bg-ink text-paper font-semibold px-6 py-3 hover:bg-zap-yellow hover:text-ink transition-colors whitespace-nowrap"
-        >
-          Text us for a quote
-        </a>
+    <div className="mt-12 grid gap-6 rounded-2xl border-2 border-dashed border-zap-dark bg-white p-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+      <div>
+        <h3 className="font-display text-xl font-bold text-ink">
+          Multiple locations, or something we don&apos;t list?
+        </h3>
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-neutral-700">
+          More cards than the bundles cover, a different material, one design per
+          location. Tell us what you need and we&apos;ll quote it. No minimum
+          order.
+        </p>
       </div>
+      <a
+        href={waLink("Hi ZapTap - I need a custom quote. Here's what I'm looking for:")}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
+      >
+        Get a quote on WhatsApp
+      </a>
     </div>
   );
 }

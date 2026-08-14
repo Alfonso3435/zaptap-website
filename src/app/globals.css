@@ -1,29 +1,12 @@
 @import "tailwindcss";
 
-:root {
-  --ink: #0b0b0c;
-  --paper: #fbfbf9;
-  --paper-dim: #f2f1ec;
-  --zap-yellow: #ffde1a;
-  --zap-yellow-deep: #f0c800;
-  --graphite: #6b7280;
-  --line: #e6e4dc;
-}
+@theme {
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-@theme inline {
-  --color-ink: var(--ink);
-  --color-paper: var(--paper);
-  --color-paper-dim: var(--paper-dim);
-  --color-zap-yellow: var(--zap-yellow);
-  --color-zap-yellow-deep: var(--zap-yellow-deep);
-  --color-graphite: var(--graphite);
-  --color-line: var(--line);
-  --font-display: var(--font-space-grotesk);
-  --font-body: var(--font-inter);
-}
-
-* {
-  box-sizing: border-box;
+  --color-zap: #ffe500;
+  --color-zap-dark: #e6ce00;
+  --color-ink: #0a0a0a;
 }
 
 html {
@@ -31,77 +14,19 @@ html {
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-body), system-ui, sans-serif;
-}
-
-h1, h2, h3, h4, .font-display {
-  font-family: var(--font-display), system-ui, sans-serif;
-}
-
-::selection {
-  background: var(--zap-yellow);
-  color: var(--ink);
-}
-
-:focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 2px;
-}
-
-/* Signature signal-ripple motif */
-@keyframes ripple-out {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
-}
-
-.ripple-ring {
-  position: absolute;
-  border-radius: 9999px;
-  border: 2px solid var(--ink);
-  animation: ripple-out 2.6s ease-out infinite;
-}
-
-@keyframes bolt-flicker {
-  0%, 92%, 100% { opacity: 1; }
-  94% { opacity: 0.35; }
-  96% { opacity: 1; }
-}
-
-.bolt-flicker {
-  animation: bolt-flicker 5s ease-in-out infinite;
+  background: #ffffff;
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .ripple-ring,
-  .bolt-flicker {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-}
-
-.container-page {
-  max-width: 1180px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-.eyebrow {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--zap-yellow-deep);
 }
