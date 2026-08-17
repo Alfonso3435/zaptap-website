@@ -6,7 +6,7 @@ import WhyNotCheap from "@/components/WhyNotCheap";
 import Guarantee from "@/components/Guarantee";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import { waLink } from "@/lib/whatsapp";
+import { smsLink } from "@/lib/sms";
 
 export const metadata: Metadata = {
   title: "Custom Google review cards — NFC, one-time payment | ZapTap",
@@ -69,9 +69,7 @@ export default function GoogleReviewCardPage() {
                 Get my custom cards
               </Link>
               <a
-                href={waLink("Hi ZapTap - here's my logo, can you mock up my card?")}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={smsLink("Hi ZapTap - here's my logo, can you mock up my card?")}
                 className="rounded-full border border-neutral-300 px-7 py-3.5 text-base font-semibold text-ink transition hover:border-ink"
               >
                 Send your logo for a free mockup

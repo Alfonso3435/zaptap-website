@@ -1,4 +1,4 @@
-import { EMAIL, PHONE_DISPLAY, waLink } from "@/lib/whatsapp";
+import { EMAIL, PHONE_DISPLAY, smsLink } from "@/lib/sms";
 
 export default function Contact() {
   return (
@@ -24,13 +24,11 @@ export default function Contact() {
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:max-w-3xl">
           <a
-            href={waLink("Hi ZapTap - I have a question before I order:")}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={smsLink("Hi ZapTap - I have a question before I order:")}
             className="rounded-2xl border border-neutral-200 p-6 transition hover:border-ink"
           >
             <p className="font-display text-xs font-semibold uppercase tracking-widest text-neutral-500">
-              WhatsApp
+              Text us
             </p>
             <p className="mt-2 font-display text-lg font-bold text-ink">{PHONE_DISPLAY}</p>
           </a>

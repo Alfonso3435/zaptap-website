@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ZapMark from "./ZapMark";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { DISCOUNT_REASON } from "@/data/products";
 import type { Destination, Product } from "@/types";
@@ -21,13 +21,14 @@ export default function ProductCard({ product }: { product: Product }) {
         </span>
       )}
 
-      {/*
-        TODO(Poncho): replace this placeholder with a real photo at product.image.
-        Card in a hand, on a counter, next to a phone. Until then this is a brand
-        block rather than a sign that says the product does not exist yet.
-      */}
-      <div className="flex aspect-4/3 items-center justify-center rounded-xl bg-neutral-100">
-        <ZapMark className="h-12 w-12 text-neutral-400" />
+      <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-neutral-100">
+        <Image
+          src={product.image ?? "/products/counter-card.png"}
+          alt={`${product.name} — ${product.subtitle}`}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          className="object-cover"
+        />
       </div>
 
       <h3 className="mt-6 font-display text-xl font-bold text-ink">{product.name}</h3>

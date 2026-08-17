@@ -1,4 +1,4 @@
-import { waLink } from "@/lib/whatsapp";
+import { smsLink } from "@/lib/sms";
 
 const segments = [
   { trade: "Restaurants & cafes", moment: "When you drop the check. Card on the table, one per section." },
@@ -37,9 +37,7 @@ export default function WhoItsFor() {
         <p className="mt-10 max-w-2xl text-base leading-relaxed text-neutral-600">
           Not on this list, or your customers never come to you?{" "}
           <a
-            href={waLink("Hi ZapTap - my business is: ... Does the card make sense for what I do?")}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={smsLink("Hi ZapTap - my business is: ... Does the card make sense for what I do?")}
             className="font-semibold text-ink underline underline-offset-4"
           >
             Message us what you do

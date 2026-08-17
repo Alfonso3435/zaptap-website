@@ -28,7 +28,7 @@ export const products: Product[] = [
     unit: "card",
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
-    image: "/products/counter-card.jpg",
+    image: "/products/counter-card.png",
   },
   {
     id: "front-desk-plate",
@@ -41,7 +41,7 @@ export const products: Product[] = [
     unit: "plate",
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
-    image: "/products/front-desk-plate.jpg",
+    image: "/products/front-desk-plate.png",
   },
   {
     id: "tabletop-asker",
@@ -54,7 +54,7 @@ export const products: Product[] = [
     unit: "display",
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
-    image: "/products/tabletop-asker.jpg",
+    image: "/products/tabletop-asker.png",
   },
 ];
 
@@ -72,27 +72,27 @@ export const bundles: Product[] = [
     unit: "bundle",
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
-    image: "/products/starter-kit.jpg",
+    image: "/products/starter-kit.png",
   },
   {
     id: "full-floor",
     name: "The Full Floor System",
-    subtitle: "5 cards + 1 counter plate + 1 tabletop display",
+    subtitle: "4 cards + 1 counter plate + 1 tabletop display",
     badge: "Most businesses start here",
     description:
       "Covers every place the window opens: the counter, the tables, and whoever is handing the customer their check or their keys.",
     includes: [
-      "5 custom NFC cards",
+      "4 custom NFC cards",
       "1 NFC counter plate",
       "1 tabletop display with stand",
       "Placement guide",
     ],
-    price: 149,
-    compareAt: 194.94,
+    price: 129,
+    compareAt: 154.95,
     unit: "bundle",
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
-    image: "/products/full-floor.jpg",
+    image: "/products/full-floor.png",
   },
 ];
 

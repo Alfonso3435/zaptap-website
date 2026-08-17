@@ -45,7 +45,7 @@ const faqs = [
   },
   {
     q: "How do I pay, and how long does shipping take?",
-    a: "Add what you want to the cart and check out over WhatsApp. We confirm your design, take payment, and ship free, delivered in 48 hours. If you're in Bellevue, Redmond, Kirkland, Issaquah or Sammamish, we can hand it to you instead.",
+    a: "Add what you want to the cart and check out by text. We confirm your design, take payment, and ship free, delivered in 48 hours. If you're in Bellevue, Redmond, Kirkland, Issaquah or Sammamish, we can hand it to you instead.",
   },
   {
     q: "What if I don't like it?",

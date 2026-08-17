@@ -1,13 +1,19 @@
 import type { CartItem } from "@/types";
 import { DESTINATION_LABELS } from "@/types";
 
-/** Digits only, country code first. Used for every wa.me link on the site. */
-export const WHATSAPP_NUMBER = "14256528532";
+/** Used for every sms: link on the site. */
+export const SMS_NUMBER = "+14256528532";
 export const PHONE_DISPLAY = "+1 425 652 8532";
 export const EMAIL = "zaptapcard@gmail.com";
 
-export function waLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+/**
+ * Builds an sms: deep link with a prefilled message body.
+ * "?&body=" (rather than plain "?body=") is the pattern that reliably
+ * prefills the message on both iOS and Android — dropping the "&" breaks
+ * prefill on some Android versions.
+ */
+export function smsLink(message: string) {
+  return `sms:${SMS_NUMBER}?&body=${encodeURIComponent(message)}`;
 }
 
 export function checkoutMessage(items: CartItem[], total: number) {

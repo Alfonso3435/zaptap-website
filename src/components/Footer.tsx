@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ZapMark from "./ZapMark";
-import { EMAIL, PHONE_DISPLAY } from "@/lib/whatsapp";
+import { EMAIL, PHONE_DISPLAY } from "@/lib/sms";
 
 export default function Footer() {
   return (

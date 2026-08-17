@@ -30,19 +30,16 @@ export default function ZeroStepCapture() {
           the ninety seconds with room to spare.
         </p>
 
-        {/*
-          TODO(Poncho): replace with the real 10-second demo.
-          Phone, card, Google opening. This is the single highest-leverage asset
-          on the page and it does more for this section than any paragraph.
-        */}
-        <div className="mt-12 flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed border-neutral-300 bg-neutral-50">
-          <div className="px-6 text-center">
-            <p className="font-display text-lg font-semibold text-neutral-500">Demo video</p>
-            <p className="mt-2 text-sm text-neutral-400">
-              Ten seconds: a phone touches the card, Google opens.
-            </p>
-          </div>
-        </div>
+        <video
+          className="mt-12 aspect-video w-full rounded-2xl border border-neutral-200 bg-neutral-100 object-cover"
+          src="/video/demo.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+          aria-label="A phone touches a ZapTap card and the Google review page opens, in ten seconds"
+        />
 
         <h3 className="mt-20 max-w-3xl font-display text-2xl font-bold leading-tight tracking-tight text-ink md:text-3xl">
           Three things that are part of how it works, not features on a list

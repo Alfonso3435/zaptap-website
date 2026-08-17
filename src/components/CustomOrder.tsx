@@ -1,4 +1,4 @@
-import { waLink } from "@/lib/whatsapp";
+import { smsLink } from "@/lib/sms";
 
 export default function CustomOrder() {
   return (
@@ -14,12 +14,10 @@ export default function CustomOrder() {
         </p>
       </div>
       <a
-        href={waLink("Hi ZapTap - I need a custom quote. Here's what I'm looking for:")}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={smsLink("Hi ZapTap - I need a custom quote. Here's what I'm looking for:")}
         className="rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
       >
-        Get a quote on WhatsApp
+        Get a quote by text
       </a>
     </div>
   );

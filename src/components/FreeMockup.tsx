@@ -1,4 +1,4 @@
-import { EMAIL, waLink } from "@/lib/whatsapp";
+import { EMAIL, smsLink } from "@/lib/sms";
 
 export default function FreeMockup() {
   return (
@@ -29,12 +29,10 @@ export default function FreeMockup() {
             <p className="font-display text-lg font-bold text-ink">Send it here</p>
 
             <a
-              href={waLink("Hi ZapTap - here's my logo, can you mock up my card? My business is:")}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={smsLink("Hi ZapTap - here's my logo, can you mock up my card? My business is:")}
               className="mt-6 block rounded-full bg-ink px-7 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
             >
-              Send my logo on WhatsApp
+              Text us your logo
             </a>
 
             <a

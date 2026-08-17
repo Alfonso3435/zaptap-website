@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { checkoutMessage, waLink } from "@/lib/whatsapp";
+import { checkoutMessage, smsLink } from "@/lib/sms";
 import { DESTINATION_LABELS } from "@/types";
 
 export default function CartDrawer() {
@@ -115,16 +115,14 @@ export default function CartDrawer() {
             </p>
 
             <a
-              href={waLink(checkoutMessage(items, total))}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={smsLink(checkoutMessage(items, total))}
               className="mt-5 block rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
             >
-              Finish on WhatsApp
+              Finish by text
             </a>
 
             <p className="mt-3 text-xs leading-relaxed text-neutral-500">
-              We&apos;ll confirm your design and Google link there, then send
+              We&apos;ll confirm your design and Google link by text, then send
               payment. Nothing is charged until you approve the mockup.
             </p>
 
