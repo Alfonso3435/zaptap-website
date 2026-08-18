@@ -35,7 +35,7 @@ export default function Hero() {
                 href="#how-it-works"
                 className="rounded-full border border-neutral-300 px-7 py-3.5 text-base font-semibold text-ink transition hover:border-ink"
               >
-                Watch the 10-second demo
+                Watch the demo
               </Link>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function Hero() {
           <li>One payment. No subscription.</li>
           <li>Free custom design.</li>
           <li>Free shipping, delivered in 48 hours.</li>
-          <li>30 days to prove it or your money back.</li>
+          <li>Don&apos;t love the design? Free redesign within 30 days.</li>
         </ul>
       </div>
     </section>

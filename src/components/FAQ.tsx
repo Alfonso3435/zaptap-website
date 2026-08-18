@@ -49,7 +49,7 @@ const faqs = [
   },
   {
     q: "What if I don't like it?",
-    a: "Put it on your counter for 30 days. If your review count didn't move more than it did the month before, send us the two screenshots and we refund you in full. Keep the cards.",
+    a: "Tell us within 30 days of delivery and we'll redesign it and send you a new one, free. One free redesign per order, and you don't need to send the first set back.",
   },
   {
     q: "Will it interfere with my card reader or POS?",
