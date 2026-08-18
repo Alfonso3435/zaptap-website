@@ -1,13 +1,41 @@
 "use client";
 
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { checkoutMessage, smsLink } from "@/lib/sms";
 import { DESTINATION_LABELS } from "@/types";
 
 export default function CartDrawer() {
   const { items, total, isOpen, closeCart, setQuantity, remove, clear } = useCart();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
+
+  async function handleCheckout() {
+    setError(null);
+    setIsRedirecting(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((i) => ({
+            productId: i.productId,
+            quantity: i.quantity,
+            destination: i.destination,
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        throw new Error(data.error ?? "Something went wrong.");
+      }
+      window.location.href = data.url;
+    } catch {
+      setError("Couldn't start checkout. Try again in a moment.");
+      setIsRedirecting(false);
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50">
@@ -114,16 +142,24 @@ export default function CartDrawer() {
               Free shipping. Free custom design. One payment, no subscription.
             </p>
 
-            <a
-              href={smsLink(checkoutMessage(items, total))}
-              className="mt-5 block rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800"
+            <button
+              onClick={handleCheckout}
+              disabled={isRedirecting}
+              className="mt-5 block w-full rounded-full bg-ink px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-60"
             >
-              Finish by text
-            </a>
+              {isRedirecting ? "Redirecting to payment..." : "Pay now"}
+            </button>
+
+            {error && (
+              <p className="mt-3 text-center text-xs font-medium text-red-600">
+                {error}
+              </p>
+            )}
 
             <p className="mt-3 text-xs leading-relaxed text-neutral-500">
-              We&apos;ll confirm your design and Google link by text, then send
-              payment. Nothing is charged until you approve the mockup.
+              You&apos;ll enter your phone number and Google review link on the
+              next screen. We&apos;ll text you to confirm your design and get
+              your logo — nothing ships until you approve it.
             </p>
 
             <button
