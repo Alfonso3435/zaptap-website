@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { fbTrack } from "@/lib/fpixel";
 
-export default function CheckoutSuccessPage() {
+function SuccessContent() {
   const { clear } = useCart();
   const cleared = useRef(false);
+  const tracked = useRef(false);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     // Ref guard avoids clearing twice under React's dev-mode double-render.
@@ -14,6 +18,31 @@ export default function CheckoutSuccessPage() {
     cleared.current = true;
     clear();
   }, [clear]);
+
+  useEffect(() => {
+    if (tracked.current) return;
+    const sessionId = searchParams.get("session_id");
+    if (!sessionId) return;
+    tracked.current = true;
+
+    // Verify with Stripe (via our own API route) before firing Purchase,
+    // so the event only fires for real, confirmed payments.
+    fetch(`/api/checkout/verify-session?session_id=${encodeURIComponent(sessionId)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.paid) {
+          fbTrack("Purchase", {
+            value: data.amount_total,
+            currency: data.currency,
+            content_type: "product",
+          });
+        }
+      })
+      .catch(() => {
+        // Silently skip tracking if verification fails; the customer still
+        // sees their confirmation page regardless.
+      });
+  }, [searchParams]);
 
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-6 text-center">
@@ -41,5 +70,13 @@ export default function CheckoutSuccessPage() {
         Back to ZapTap
       </Link>
     </main>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={null}>
+      <SuccessContent />
+    </Suspense>
   );
 }

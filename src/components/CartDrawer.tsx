@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { DESTINATION_LABELS } from "@/types";
+import { fbTrack } from "@/lib/fpixel";
 
 export default function CartDrawer() {
   const { items, total, isOpen, closeCart, setQuantity, remove, clear } = useCart();
@@ -14,6 +15,14 @@ export default function CartDrawer() {
   async function handleCheckout() {
     setError(null);
     setIsRedirecting(true);
+
+    // Meta Pixel: InitiateCheckout
+    fbTrack("InitiateCheckout", {
+      value: total,
+      currency: "USD",
+      num_items: items.reduce((n, i) => n + i.quantity, 0),
+    });
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import type { CartItem, Destination, Product } from "@/types";
+import { fbTrack } from "@/lib/fpixel";
 
 const STORAGE_KEY = "zaptap-cart-v2";
 
@@ -74,6 +75,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ];
       });
       setIsOpen(true);
+
+      // Meta Pixel: AddToCart
+      fbTrack("AddToCart", {
+        content_ids: [product.id],
+        content_type: "product",
+        value: product.price * quantity,
+        currency: "USD",
+      });
     },
     []
   );
