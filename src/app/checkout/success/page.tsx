@@ -25,17 +25,23 @@ function SuccessContent() {
     if (!sessionId) return;
     tracked.current = true;
 
-    // Verify with Stripe (via our own API route) before firing Purchase,
-    // so the event only fires for real, confirmed payments.
+    // Verify with Stripe (via our own API route) before firing Purchase, so
+    // the event only fires for real, confirmed payments. The server also
+    // sends its own Purchase event via Conversions API using the same
+    // eventId returned here, so Meta deduplicates browser + server into one.
     fetch(`/api/checkout/verify-session?session_id=${encodeURIComponent(sessionId)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.paid) {
-          fbTrack("Purchase", {
-            value: data.amount_total,
-            currency: data.currency,
-            content_type: "product",
-          });
+          fbTrack(
+            "Purchase",
+            {
+              value: data.amount_total,
+              currency: data.currency,
+              content_type: "product",
+            },
+            data.eventId
+          );
         }
       })
       .catch(() => {

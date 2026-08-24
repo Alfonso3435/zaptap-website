@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { allProducts } from "@/data/products";
 import { DESTINATION_LABELS, type Destination } from "@/types";
+import { sendCapiEvent } from "@/lib/capi";
 
 interface IncomingItem {
   productId: string;
@@ -12,6 +13,7 @@ interface IncomingItem {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const items: IncomingItem[] | undefined = body?.items;
+  const eventId: string | undefined = body?.eventId;
 
   if (!items || items.length === 0) {
     return NextResponse.json({ error: "Cart is empty." }, { status: 400 });
@@ -97,6 +99,25 @@ export async function POST(req: NextRequest) {
       { error: "Stripe did not return a checkout URL." },
       { status: 500 }
     );
+  }
+
+  // Server-side mirror of the browser's InitiateCheckout event, sent via
+  // Meta Conversions API. Uses the same eventId the client already fired,
+  // so Meta deduplicates the two into one event. Fire-and-forget: never
+  // blocks or breaks checkout if it fails.
+  if (eventId) {
+    const totalCents = line_items.reduce(
+      (sum, li) => sum + li.price_data.unit_amount * li.quantity,
+      0
+    );
+    sendCapiEvent({
+      eventName: "InitiateCheckout",
+      eventId,
+      value: totalCents / 100,
+      currency: "USD",
+      clientIp: req.headers.get("x-forwarded-for"),
+      userAgent: req.headers.get("user-agent"),
+    });
   }
 
   return NextResponse.json({ url: session.url });

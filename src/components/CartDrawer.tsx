@@ -16,12 +16,24 @@ export default function CartDrawer() {
     setError(null);
     setIsRedirecting(true);
 
-    // Meta Pixel: InitiateCheckout
-    fbTrack("InitiateCheckout", {
-      value: total,
-      currency: "USD",
-      num_items: items.reduce((n, i) => n + i.quantity, 0),
-    });
+    // Shared event ID: same value goes to the browser Pixel call below AND
+    // to the server (which uses it for the matching Conversions API call in
+    // /api/checkout). Meta deduplicates on this ID instead of counting the
+    // conversion twice.
+    const eventId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `ic_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+    fbTrack(
+      "InitiateCheckout",
+      {
+        value: total,
+        currency: "USD",
+        num_items: items.reduce((n, i) => n + i.quantity, 0),
+      },
+      eventId
+    );
 
     try {
       const res = await fetch("/api/checkout", {
@@ -33,6 +45,7 @@ export default function CartDrawer() {
             quantity: i.quantity,
             destination: i.destination,
           })),
+          eventId,
         }),
       });
       const data = await res.json();
