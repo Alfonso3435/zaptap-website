@@ -40,7 +40,7 @@ export default function Footer() {
             <li>{PHONE_DISPLAY}</li>
             <li>{EMAIL}</li>
             <li>Sammamish, WA</li>
-            <li className="pt-2">Free shipping, delivered in 48 hours</li>
+            <li className="pt-2">Free shipping</li>
           </ul>
         </div>
       </div>

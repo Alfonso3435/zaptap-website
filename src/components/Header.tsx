@@ -6,9 +6,9 @@ import { LogoCompact } from "./Logo";
 import { useCart } from "@/context/CartContext";
 
 const links = [
-  { href: "/#the-window", label: "The 90 seconds" },
-  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#demo", label: "See it work" },
   { href: "/#products", label: "Cards" },
+  { href: "/#guarantee", label: "Guarantee" },
   { href: "/#faq", label: "FAQ" },
 ];
 

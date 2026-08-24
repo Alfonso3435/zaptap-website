@@ -11,7 +11,7 @@ import { smsLink } from "@/lib/sms";
 export const metadata: Metadata = {
   title: "Custom Google review cards — NFC, one-time payment | ZapTap",
   description:
-    "Custom-branded NFC Google review cards from $19.99. Free design, backup QR, reprogrammable link, free chip replacement, 48-hour delivery. No subscription.",
+    "Custom-branded NFC Google review cards from $19.99. Free design, backup QR, reprogrammable link, free chip replacement, free shipping. No subscription.",
 };
 
 /**
@@ -26,7 +26,7 @@ export default function GoogleReviewCardPage() {
   const specs: [string, string][] = [
     ["Price", "From $19.99, one time"],
     ["Custom design", "Included, no minimum"],
-    ["Delivery", "Free shipping, 48 hours"],
+    ["Delivery", "Free shipping"],
     ["If it fails", "Free chip replacement"],
   ];
 

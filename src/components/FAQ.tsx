@@ -5,7 +5,7 @@ import { useState } from "react";
 const faqs = [
   {
     q: "Will my customers actually use it, or will it sit there?",
-    a: "The honest answer is that it depends on where you put it and whether anyone says a word. A card in a drawer does nothing. A card on the counter that a staff member slides forward while saying \"if you've got ten seconds\" is a different thing entirely. That's why every order comes with a short placement guide: the spots that get tapped and the ones that don't. We're a new company and we're not going to quote you a tap rate we haven't measured.",
+    a: "The honest answer is that it depends on where you put it and whether anyone says a word. A card in a drawer does nothing. A card on the counter that a staff member slides forward while saying \"if you've got ten seconds\" is a different thing entirely. Put it where the customer is already standing when the work is done, and say one sentence. We're a new company and we're not going to quote you a tap rate we haven't measured.",
   },
   {
     q: "Does it work on iPhone and Android?",
@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: "Why $19.99 when Amazon sells them for $8?",
-    a: "Because a card that fails costs you the moment you were saving it for. The $8 listings fail in a handful of documented ways: dead chips, print peeling, blank cards shipped, links you can't change without a yearly fee, three-week shipping, and sellers who stop replying. Ours includes custom design, a backup QR, a link you can reprogram for free, chip replacement for as long as you own it, 48-hour delivery, and a phone number that reaches a person in Sammamish.",
+    a: "Because a card that fails costs you the moment you were saving it for. The $8 listings fail in a handful of documented ways: dead chips, print peeling, blank cards shipped, links you can't change without a yearly fee, three-week shipping, and sellers who stop replying. Ours includes custom design, a backup QR, a link you can reprogram for free, chip replacement for as long as you own it, free shipping, and a phone number that reaches a person in Sammamish.",
   },
   {
     q: "Is there a monthly fee or a subscription?",
@@ -45,7 +45,7 @@ const faqs = [
   },
   {
     q: "How do I pay, and how long does shipping take?",
-    a: "Add what you want to the cart and check out by text. We confirm your design, take payment, and ship free, delivered in 48 hours. If you're in Bellevue, Redmond, Kirkland, Issaquah or Sammamish, we can hand it to you instead.",
+    a: "Add what you want to the cart and check out by text. We confirm your design, take payment, and ship it free. If you're in Bellevue, Redmond, Kirkland, Issaquah or Sammamish, we can hand it to you instead.",
   },
   {
     q: "What if I don't like it?",

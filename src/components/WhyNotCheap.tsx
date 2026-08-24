@@ -17,7 +17,7 @@ const failures = [
   },
   {
     fails: "It ships from overseas and takes three weeks.",
-    fix: "Delivered in 48 hours, free shipping.",
+    fix: "Free shipping, straight from us.",
   },
   {
     fails: "Generic card, no logo, or a logo upcharge at checkout.",

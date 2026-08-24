@@ -24,24 +24,13 @@ export default function ZeroStepCapture() {
         </h2>
 
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-neutral-700">
-          No camera. No app. No typing. No searching for your business and hoping
-          they pick the right listing. The phone touches the card and your Google
-          review page is open. That&apos;s the entire process, and it fits inside
-          the ninety seconds with room to spare.
+          No searching for your business and hoping they pick the right listing.
+          One step, done inside the ninety seconds with room to spare. Three
+          things make that work, and none of them are optional.
         </p>
 
-        <video
-          className="mt-12 aspect-video w-full rounded-2xl border border-neutral-200 bg-neutral-100 object-cover"
-          src="/video/demo.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          controls
-          aria-label="A phone touches a ZapTap card and the Google review page opens, in ten seconds"
-        />
 
-        <h3 className="mt-20 max-w-3xl font-display text-2xl font-bold leading-tight tracking-tight text-ink md:text-3xl">
+        <h3 className="mt-14 max-w-3xl font-display text-2xl font-bold leading-tight tracking-tight text-ink md:text-3xl">
           Three things that are part of how it works, not features on a list
         </h3>
 

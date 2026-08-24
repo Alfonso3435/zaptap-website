@@ -14,7 +14,7 @@ export default function ProductCatalog() {
 
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-700">
           Everything is designed around your logo and colors, free. One payment.
-          Free shipping, delivered in 48 hours.
+          Free shipping.
         </p>
 
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-700">

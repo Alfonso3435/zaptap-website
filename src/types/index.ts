@@ -13,6 +13,8 @@ export interface Product {
   description: string;
   price: number;
   compareAt?: number;
+  /** Overrides DISCOUNT_REASON for this product only. */
+  discountReason?: string;
   unit: string;
   badge?: string;
   includes?: string[];

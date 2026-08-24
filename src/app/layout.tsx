@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://zaptap.shop"),
   title: "ZapTap — Custom NFC Google review cards, one-time payment",
   description:
-    "Custom-branded NFC review cards from $19.99. Free design, backup QR, free chip replacement, 48-hour delivery. No subscription. Built in Sammamish, WA.",
+    "Custom-branded NFC review cards from $19.99. Free design, backup QR, free chip replacement, free shipping. No subscription. Built in Sammamish, WA.",
   openGraph: {
     title: "ZapTap — Custom NFC Google review cards",
     description:

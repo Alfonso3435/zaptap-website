@@ -32,10 +32,10 @@ export default function Hero() {
                 See the cards
               </Link>
               <Link
-                href="#how-it-works"
+                href="#demo"
                 className="rounded-full border border-neutral-300 px-7 py-3.5 text-base font-semibold text-ink transition hover:border-ink"
               >
-                Watch the demo
+                Watch the 10-second demo
               </Link>
             </div>
           </div>
@@ -46,7 +46,7 @@ export default function Hero() {
         <ul className="mt-14 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-neutral-200 pt-8 text-sm text-neutral-600 sm:grid-cols-2 lg:grid-cols-4">
           <li>One payment. No subscription.</li>
           <li>Free custom design.</li>
-          <li>Free shipping, delivered in 48 hours.</li>
+          <li>Free shipping.</li>
           <li>Don&apos;t love the design? Free redesign within 30 days.</li>
         </ul>
       </div>

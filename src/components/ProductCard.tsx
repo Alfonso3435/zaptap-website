@@ -59,7 +59,9 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       {product.compareAt && (
-        <p className="mt-1.5 text-xs font-medium text-neutral-500">{DISCOUNT_REASON}</p>
+        <p className="mt-1.5 text-xs font-medium text-neutral-500">
+          {product.discountReason ?? DISCOUNT_REASON}
+        </p>
       )}
 
       {/*

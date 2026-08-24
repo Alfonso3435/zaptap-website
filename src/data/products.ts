@@ -14,7 +14,7 @@ import type { Product } from "@/types";
  *    a spec sheet that's trivial to price-compare against a generic listing.
  */
 
-export const DISCOUNT_REASON = "Founding price - first 100 Eastside businesses";
+export const DISCOUNT_REASON = "Direct price - no reseller markup";
 
 export const products: Product[] = [
   {
@@ -29,6 +29,21 @@ export const products: Product[] = [
     destinations: ["google", "social", "survey"],
     defaultDestination: "google",
     image: "/products/counter-card.png",
+  },
+  {
+    id: "counter-card-four",
+    name: "The Counter Card, 4-Pack",
+    subtitle: "4 custom NFC review cards",
+    badge: "4 for the price of 3",
+    description:
+      "Four of the same card. One by the register, one at the back, one in a pocket, one spare for when a staff member walks off with the first three.",
+    price: 59.97,
+    compareAt: 79.96,
+    discountReason: "Four cards, three-card price",
+    unit: "4-pack",
+    destinations: ["google", "social", "survey"],
+    defaultDestination: "google",
+    image: "/products/counter-card-four.png",
   },
   {
     id: "front-desk-plate",
@@ -66,7 +81,7 @@ export const bundles: Product[] = [
     badge: "Covers one counter",
     description:
       "Covers a single point of sale. One plate that lives on the counter, plus three cards for staff to hand over.",
-    includes: ["3 custom NFC cards", "1 NFC counter plate", "Placement guide"],
+    includes: ["3 custom NFC cards", "1 NFC counter plate"],
     price: 79,
     compareAt: 94.97,
     unit: "bundle",
@@ -85,7 +100,6 @@ export const bundles: Product[] = [
       "4 custom NFC cards",
       "1 NFC counter plate",
       "1 tabletop display with stand",
-      "Placement guide",
     ],
     price: 129,
     compareAt: 154.95,
