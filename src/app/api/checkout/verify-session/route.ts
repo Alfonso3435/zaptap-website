@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { sendCapiEvent } from "@/lib/capi";
 
@@ -28,15 +29,19 @@ export async function GET(req: NextRequest) {
     // deduplicates automatically instead of double-counting the sale.
     const eventId = `purchase_${session.id}`;
 
-    // Fire-and-forget server-side mirror of the browser's Purchase event.
-    sendCapiEvent({
-      eventName: "Purchase",
-      eventId,
-      value: amount_total,
-      currency,
-      clientIp: req.headers.get("x-forwarded-for"),
-      userAgent: req.headers.get("user-agent"),
-    });
+    // Server-side mirror of the browser's Purchase event, wrapped in
+    // after() so Vercel keeps the function alive long enough for the fetch
+    // to Meta to actually complete before freezing the instance.
+    after(() =>
+      sendCapiEvent({
+        eventName: "Purchase",
+        eventId,
+        value: amount_total,
+        currency,
+        clientIp: req.headers.get("x-forwarded-for"),
+        userAgent: req.headers.get("user-agent"),
+      })
+    );
 
     return NextResponse.json({ paid: true, amount_total, currency, eventId });
   } catch {

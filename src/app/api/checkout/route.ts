@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { allProducts } from "@/data/products";
 import { DESTINATION_LABELS, type Destination } from "@/types";
@@ -103,21 +104,28 @@ export async function POST(req: NextRequest) {
 
   // Server-side mirror of the browser's InitiateCheckout event, sent via
   // Meta Conversions API. Uses the same eventId the client already fired,
-  // so Meta deduplicates the two into one event. Fire-and-forget: never
-  // blocks or breaks checkout if it fails.
+  // so Meta deduplicates the two into one event.
+  //
+  // Wrapped in after(): Vercel can freeze the function the instant the
+  // response below is returned, killing any un-awaited fetch mid-flight.
+  // after() tells Vercel "keep this instance alive until this finishes,"
+  // so the request to Meta actually completes, without making the
+  // customer wait for it.
   if (eventId) {
     const totalCents = line_items.reduce(
       (sum, li) => sum + li.price_data.unit_amount * li.quantity,
       0
     );
-    sendCapiEvent({
-      eventName: "InitiateCheckout",
-      eventId,
-      value: totalCents / 100,
-      currency: "USD",
-      clientIp: req.headers.get("x-forwarded-for"),
-      userAgent: req.headers.get("user-agent"),
-    });
+    after(() =>
+      sendCapiEvent({
+        eventName: "InitiateCheckout",
+        eventId,
+        value: totalCents / 100,
+        currency: "USD",
+        clientIp: req.headers.get("x-forwarded-for"),
+        userAgent: req.headers.get("user-agent"),
+      })
+    );
   }
 
   return NextResponse.json({ url: session.url });
