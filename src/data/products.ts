@@ -13,11 +13,8 @@ import type { Product } from "@/types";
  * 4. Names are outcome-led with a plain descriptor underneath, so the page isn't
  *    a spec sheet that's trivial to price-compare against a generic listing.
  *
- * TEMPORARILY HIDDEN — counter plates are on order and not in stock yet.
- * Three products are commented out below: the Front Desk Plate, the Starter Kit,
- * and the Full Floor System. Nothing was deleted. When the plates arrive,
- * uncomment those three blocks and everything is back exactly as it was.
- * The Table Kit covers the same job in the meantime.
+ * Counter plates are back in stock — the Front Desk Plate, the Starter Kit,
+ * and the Full Floor System are live again below.
  */
 
 export const DISCOUNT_REASON = "Direct price - no reseller markup";
@@ -51,24 +48,19 @@ export const products: Product[] = [
     defaultDestination: "google",
     image: "/products/counter-card-four.png",
   },
-
-  // ---------------------------------------------------------------------------
-  // HIDDEN until counter plates are in stock. Uncomment to bring it back.
-  // ---------------------------------------------------------------------------
-  // {
-  //   id: "front-desk-plate",
-  //   name: "The Front Desk Plate",
-  //   subtitle: "1 custom NFC counter plate",
-  //   description:
-  //     "Sits flat on the counter or front desk and stays there. Nobody has to remember to bring it out.",
-  //   price: 35,
-  //   compareAt: 49,
-  //   unit: "plate",
-  //   destinations: ["google", "social", "survey"],
-  //   defaultDestination: "google",
-  //   image: "/products/front-desk-plate.png",
-  // },
-
+  {
+    id: "front-desk-plate",
+    name: "The Front Desk Plate",
+    subtitle: "1 custom NFC counter plate",
+    description:
+      "Sits flat on the counter or front desk and stays there. Nobody has to remember to bring it out.",
+    price: 35,
+    compareAt: 49,
+    unit: "plate",
+    destinations: ["google", "social", "survey"],
+    defaultDestination: "google",
+    image: "/products/front-desk-plate.png",
+  },
   {
     id: "tabletop-asker",
     name: "The Tabletop Asker",
@@ -89,7 +81,7 @@ export const bundles: Product[] = [
     id: "table-kit",
     name: "The Table Kit",
     subtitle: "3 cards + 1 tabletop display",
-    badge: "Most businesses start here",
+    badge: "The most efficient for getting reviews",
     description:
       "The display stands where the customer is already sitting, and the three cards go wherever the display can't: a pocket, the register, the pickup counter.",
     includes: ["3 custom NFC cards", "1 tabletop display with stand"],
@@ -100,44 +92,40 @@ export const bundles: Product[] = [
     defaultDestination: "google",
     image: "/products/table-kit.png",
   },
-
-  // ---------------------------------------------------------------------------
-  // HIDDEN until counter plates are in stock. Uncomment both to bring them back.
-  // ---------------------------------------------------------------------------
-  // {
-  //   id: "starter-kit",
-  //   name: "The Starter Kit",
-  //   subtitle: "3 cards + 1 counter plate",
-  //   badge: "Covers one counter",
-  //   description:
-  //     "Covers a single point of sale. One plate that lives on the counter, plus three cards for staff to hand over.",
-  //   includes: ["3 custom NFC cards", "1 NFC counter plate"],
-  //   price: 79,
-  //   compareAt: 94.97,
-  //   unit: "bundle",
-  //   destinations: ["google", "social", "survey"],
-  //   defaultDestination: "google",
-  //   image: "/products/starter-kit.png",
-  // },
-  // {
-  //   id: "full-floor",
-  //   name: "The Full Floor System",
-  //   subtitle: "4 cards + 1 counter plate + 1 tabletop display",
-  //   badge: "Most businesses start here",
-  //   description:
-  //     "Covers every place the window opens: the counter, the tables, and whoever is handing the customer their check or their keys.",
-  //   includes: [
-  //     "4 custom NFC cards",
-  //     "1 NFC counter plate",
-  //     "1 tabletop display with stand",
-  //   ],
-  //   price: 129,
-  //   compareAt: 154.95,
-  //   unit: "bundle",
-  //   destinations: ["google", "social", "survey"],
-  //   defaultDestination: "google",
-  //   image: "/products/full-floor.png",
-  // },
+  {
+    id: "starter-kit",
+    name: "The Starter Kit",
+    subtitle: "3 cards + 1 counter plate",
+    badge: "Covers one counter",
+    description:
+      "Covers a single point of sale. One plate that lives on the counter, plus three cards for staff to hand over.",
+    includes: ["3 custom NFC cards", "1 NFC counter plate"],
+    price: 79,
+    compareAt: 94.97,
+    unit: "bundle",
+    destinations: ["google", "social", "survey"],
+    defaultDestination: "google",
+    image: "/products/starter-kit.png",
+  },
+  {
+    id: "full-floor",
+    name: "The Full Floor System",
+    subtitle: "4 cards + 1 counter plate + 1 tabletop display",
+    badge: "Perfect for full coverage",
+    description:
+      "Covers every place the window opens: the counter, the tables, and whoever is handing the customer their check or their keys.",
+    includes: [
+      "4 custom NFC cards",
+      "1 NFC counter plate",
+      "1 tabletop display with stand",
+    ],
+    price: 129,
+    compareAt: 154.95,
+    unit: "bundle",
+    destinations: ["google", "social", "survey"],
+    defaultDestination: "google",
+    image: "/products/full-floor.png",
+  },
 ];
 
 export const allProducts: Product[] = [...products, ...bundles];
