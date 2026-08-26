@@ -35,7 +35,7 @@ export default function Hero() {
                 href="#demo"
                 className="rounded-full border border-neutral-300 px-7 py-3.5 text-base font-semibold text-ink transition hover:border-ink"
               >
-                Watch thedemo
+                Watch the demo
               </Link>
             </div>
           </div>

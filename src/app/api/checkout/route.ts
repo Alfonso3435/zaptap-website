@@ -75,6 +75,24 @@ export async function POST(req: NextRequest) {
     branding_settings: {
       display_name: "ZapTap",
     },
+    // Native address collection: Stripe validates and autocompletes the
+    // address, and the recipient's name comes with it. Far more reliable
+    // than asking for it as free text. Add country codes here if you ever
+    // ship outside the US.
+    shipping_address_collection: {
+      allowed_countries: ["US"],
+    },
+    // Shows "Free shipping — $0.00" as a line on the payment page, so the
+    // promise made across the site is visible at the moment of paying.
+    shipping_options: [
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: { amount: 0, currency: "usd" },
+          display_name: "Free shipping",
+        },
+      },
+    ],
     custom_fields: [
       {
         key: "business_name",
@@ -111,6 +129,10 @@ export async function POST(req: NextRequest) {
   // after() tells Vercel "keep this instance alive until this finishes,"
   // so the request to Meta actually completes, without making the
   // customer wait for it.
+  //
+  // Note: shipping is $0, so the value below still equals the order total.
+  // If you ever charge for shipping, add it here or Meta's reported value
+  // will drift below what you actually collected.
   if (eventId) {
     const totalCents = line_items.reduce(
       (sum, li) => sum + li.price_data.unit_amount * li.quantity,
